@@ -43,7 +43,8 @@ class EventRegisterFormTest extends SapphireTest {
 		Session::clear("FormInfo.{$form->FormName()}");
 
 		$form->validateTickets(array($quantity => 1), $form);
-		echo $this->getTicketsError($form);
+		$this->assertNull($this->getTicketsError($form));
+		Session::clear("FormInfo.{$form->FormName()}");
 
 		// Check we cannot book over the available quantity of tickets.
 		$this->assertTrue($form->validateTickets(array($quantity => 1), $form));
@@ -71,7 +72,6 @@ class EventRegisterFormTest extends SapphireTest {
 
 	protected function getTicketsError(Form $form) {
 		$errors = Session::get("FormInfo.{$form->FormName()}.errors");
-
 		if ($errors) foreach ($errors as $error) {
 			if ($error['fieldName'] == 'Tickets') {
 				return $this->getErrorTypeForMessage($error['message']);
