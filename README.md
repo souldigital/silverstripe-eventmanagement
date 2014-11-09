@@ -2,6 +2,7 @@
 The event management module allows you to manage event details and registrations from within the CMS.
 
 [![Build Status](https://travis-ci.org/jedateach/silverstripe-eventmanagement.svg?branch=1.1)](https://travis-ci.org/jedateach/silverstripe-eventmanagement)
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/jedateach/silverstripe-eventmanagement?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ## Features
 
