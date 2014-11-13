@@ -44,10 +44,6 @@ class EventRegisterFormSession extends MultiFormSession {
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
 
-		if (!$this->form->getController()->getDateTime()->Event()->RegistrationTimeLimit) {
-			return;
-		}
-
 		$isInDb     = $this->getRegistration()->isInDB();
 		$hasTickets = (bool) count($this->getRegistration()->Tickets());
 
