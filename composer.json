@@ -27,8 +27,5 @@
 	},
 	"extra": {
 		"installer-name": "eventmanagement"
-	},
-	"replace": {
-		"ajshort/silverstripe-eventmanagement": "self.version"
 	}
 }
