@@ -32,12 +32,13 @@ class EventUnregisterController extends Page_Controller {
 	 * @return Form
 	 */
 	public function UnregisterForm() {
+		$emailfield = ($this->time->hasRegistered())?new HiddenField('Email','',Member::currentUser()->Email):new EmailField(
+			'Email', _t('EventManagement.EMAIL_ADDRESS', 'Email address')
+		);
 		return new Form(
 			$this,
 			'UnregisterForm',
-			new FieldList(new EmailField(
-				'Email', _t('EventManagement.EMAIL_ADDRESS', 'Email address')
-			)),
+			new FieldList($emailfield),
 			new FieldList(new FormAction(
 				'doUnregister', _t('EventManagement.UN_REGISTER', 'Un-register')
 			)),
