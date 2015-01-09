@@ -259,6 +259,21 @@ class RegistrableEvent extends CalendarEvent {
 		return false;
 	}
 
+	function getRegistrations(){
+		$registrations = new ArrayList();
+		foreach($this->DateTimes() as $dt)
+			$registrations->merge($dt->Registrations()->toArray());
+		return $registrations;
+	}
+
+	/**
+	 * @param null $member
+	 * @return types
+	 */
+	function hasRegistered($member = null){
+		if(!$member) $member = Member::currentUser();
+		return ( $this->getRegistrations()->find("MemberID",$member->ID) );
+	}
 }
 
 class RegistrableEvent_Controller extends CalendarEvent_Controller {
