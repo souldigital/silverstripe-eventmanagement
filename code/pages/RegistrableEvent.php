@@ -249,6 +249,10 @@ class RegistrableEvent extends CalendarEvent {
 	 * @return boolean
 	 */
 	function canRegister(){
+		if($this->OneRegPerEmail && $registered = $this->hasRegisteredValid()){
+			return false;
+		}
+
 		foreach($this->DateTimes() as $time){
 			$tickets = $time->getAvailableTickets();
 			if($tickets && $tickets->exists()){
@@ -272,8 +276,14 @@ class RegistrableEvent extends CalendarEvent {
 	 */
 	function hasRegistered($member = null){
 		if(!$member) $member = Member::currentUser();
-		return ( $this->getRegistrations()->find("MemberID",$member->ID) );
+		return ( $this->getRegistrations()->filter(array("MemberID"=>$member->ID))->first() );
 	}
+
+	function hasRegisteredValid($member = null){
+		if(!$member) $member = Member::currentUser();
+		return ( $this->getRegistrations()->filter(array("MemberID"=>$member->ID, "Status"=>"Valid"))->first() );
+	}
+
 }
 
 class RegistrableEvent_Controller extends CalendarEvent_Controller {
