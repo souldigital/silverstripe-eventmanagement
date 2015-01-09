@@ -115,7 +115,7 @@ class EventRegistrationTicketsTableField extends FormField {
 					$field = new DropdownField(
 						$name, '',
 						ArrayLib::valuekey(range($min, min($available, $max))),
-						$val, null, true);
+						$val);
 				} else {
 					$field = new NumericField($name, '', $val);
 				}
