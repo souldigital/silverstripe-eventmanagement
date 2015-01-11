@@ -294,16 +294,32 @@ class RegistrableDateTime extends CalendarDateTime {
 		return Controller::join_links($this->Event()->Link(), $action, $this->ID);
 	}
 
-
-	public function hasRegistered($member = null){
-		if(!$member) $member = Member::currentUser();
-		return ( $this->Registrations()->filter(array("MemberID"=>$member->ID))->first() );
+	public function UnregisterLink() {
+		return Controller::join_links($this->Event()->Link(), 'details', $this->ID, 'unregister');
 	}
 
-	public function hasRegisteredValid($member = null){
-		if(!$member) $member = Member::currentUser();
-		return ( $this->Registrations()->filter(array("MemberID"=>$member->ID, "Status"=>"Valid"))->first() );
+
+	public function hasRegisteredForTime($member = null){
+        if(!$member || !$member instanceof Member) $member = Member::currentUser();
+        if(!$member) return false;
+        die('here '.$this->Registrations()->count());
+
+        return ( $this->Registrations()->filter(array("MemberID"=>$member->ID))->first() );
 	}
+
+	public function hasRegisteredValidForTime($member = null){
+        if(!$member || !$member instanceof Member) $member = Member::currentUser();
+        if(!$member) return false;
+        return ( $this->Registrations()->filter(array("MemberID"=>$member->ID, "Status"=>"Valid"))->first() );
+	}
+
+	public function hasRegisteredForEvent($member = null){
+        return $this->Event()->hasRegistered($member);
+	}
+
+	public function hasRegisteredValidForEvent($member = null){
+        return $this->Event()->hasRegisteredValid($member);
+    }
 
 
 }

@@ -275,12 +275,14 @@ class RegistrableEvent extends CalendarEvent {
 	 * @return types
 	 */
 	function hasRegistered($member = null){
-		if(!$member) $member = Member::currentUser();
-		return ( $this->getRegistrations()->filter(array("MemberID"=>$member->ID))->first() );
+        if(!$member || !$member instanceof Member) $member = Member::currentUser();
+        if(!$member) return false;
+        return ( $this->getRegistrations()->filter(array("MemberID"=>$member->ID))->first() );
 	}
 
 	function hasRegisteredValid($member = null){
-		if(!$member) $member = Member::currentUser();
+        if(!$member || !$member instanceof Member) $member = Member::currentUser();
+        if(!$member) return false;
 		return ( $this->getRegistrations()->filter(array("MemberID"=>$member->ID, "Status"=>"Valid"))->first() );
 	}
 

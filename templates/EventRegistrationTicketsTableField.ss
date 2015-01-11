@@ -1,3 +1,9 @@
+<h5>
+Registering for
+{$DateTime.StartDate.Format(F jS, Y)}
+{$DateTime.StartTime.Format(g:i A)} - {$DateTime.EndTime.Format(g:i A)}
+</h5>
+
 <table id="$ID" class="$CSSClasses event-tickets field">
 	<thead>
 		<tr>
