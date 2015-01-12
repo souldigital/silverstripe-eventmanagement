@@ -298,6 +298,17 @@ class RegistrableDateTime extends CalendarDateTime {
 		return Controller::join_links($this->Event()->Link(), 'details', $this->ID, 'unregister');
 	}
 
+	public function RegistrationsValid(){
+		return $this->Registrations()->filter("Status", "Valid");
+	}
+
+	public function OtherRegistrations(){
+		return ($reg = $this->hasRegisteredForTime())?$this->Registrations()->exclude("ID", $reg->ID):$this->Registrations();
+	}
+
+	public function OtherRegistrationsValid(){
+		return ($reg = $this->hasRegisteredValidForTime())?$this->RegistrationsValid()->exclude("ID", $reg->ID):$this->RegistrationsValid();
+	}
 
 	public function hasRegisteredForTime($member = null){
         if(!$member || !$member instanceof Member) $member = Member::currentUser();
