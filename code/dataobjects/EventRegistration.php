@@ -45,27 +45,26 @@ class EventRegistration extends DataObject {
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
-
-		$fields->removeByName('Tickets');
 		$fields->removeByName('Total');
 		$fields->removeByName('Token');
-		$fields->removeByName('TimeID');
-
-		$fields->addFieldToTab('Root.Tickets', $tickets = new TableListField(
-			'Tickets',
-			'EventTicket',
-			array(
-				'Title'        => 'Ticket Title',
-				'PriceSummary' => 'Price',
-				'Quantity'     => 'Quantity'
-			)));
-		$tickets->setCustomSourceItems($this->Tickets());
-
+		$memberfield = $fields->fieldByName("Root.Main.MemberID");
+		$fields->replaceField("MemberID", $memberfield->performReadonlyTransformation());
 		if (class_exists('Payment')) {
-			$fields->addFieldToTab('Root.Tickets', new ReadonlyField(
-				'TotalNice', 'Total', $this->Total->Nice()
-			));
+			if($total = $this->Total){
+				$totalcur = $this->obj('Total');
+				$totalcur->setValue($total);
+				$fields->addFieldToTab('Root.Main', new ReadonlyField(
+					'TotalNice', 'Total', $totalcur->Nice()
+				));
+			}
+			if($paymentfield = $fields->fieldByName("Root.Main.PaymentID")){
+				$fields->replaceField("PaymentID", $paymentfield->performReadonlyTransformation());
+			}
 		}
+
+		$fields->fieldByName("Root.Tickets.Tickets")->getConfig()
+		       ->removeComponentsByType("GridFieldAddNewButton")
+		       ->removeComponentsByType("GridFieldAddExistingAutocompleter");
 
 		return $fields;
 	}
